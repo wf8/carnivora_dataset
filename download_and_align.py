@@ -39,7 +39,6 @@ for i, gene in enumerate(genes):
     for j, accession in enumerate(accessions[i]):
         if accession.strip() != '':
             handle = Entrez.efetch(db='nucleotide', rettype='fasta', retmode='text', id=accession)
-            #records[i].append(SeqIO.read(handle, 'fasta'))
             record = SeqIO.read(handle, 'fasta')
             records[i].append(SeqRecord(Seq(str(record.seq), IUPAC.ambiguous_dna), id=taxa[j], description=""))
             handle.close()
@@ -57,37 +56,5 @@ for i, gene in enumerate(genes):
     print("Writing " + gene + " alignment to FASTA file...")
     with open("sequences_aligned/" + genes[i] + ".fasta", "w") as handle:
         handle.write(stdout)
-
-#print('Concatenating...')
-
-#aligned_records = []
-#for i, gene in enumerate(genes):
-#    aligned_records.append( list(SeqIO.parse("sequences_aligned/" + genes[i] + ".fasta", 'fasta')) )
-
-#def get_unknowns(length):
-#    x = ''
-#    for i in range(length):
-#        x += '?'
-#    return x
-
-#final_sequences = []
-#for i, taxon in enumerate(taxa):
-#    sequence = ''
-#    for j, accession in enumerate(accessions):
-#        if accession[i].strip() == '':
-#            sequence += get_unknowns(len(str(records[j][0].seq)))
-#        else:
-#            for record in records[j]:
-#                if accession[i].strip() in record.description:
-#                    sequence += str(record.seq)
-#                    break
-#    final_sequences.append(sequence)
-
-#final_records = []
-#for i in range(len(final_sequences)):
-#    final_records.append(SeqRecord(Seq(final_sequences[i], IUPAC.ambiguous_dna), id=taxa[i]))
-
-#print("Making final concatenated alignement file...")
-#SeqIO.write(final_records, "carnivora_aligned.fasta", "fasta")
 
 print("Done.")
